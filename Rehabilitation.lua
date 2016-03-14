@@ -60,8 +60,6 @@ function createBoarders()
 	posWall[3]={-1.4, 2.5, -5}
 	posWall[4]={1.4, 2.5, -5}
 	posWall[5]={0, 5, 1}
-	--posWall[6]={-4, 0.3, -1.9}
-	--posWall[7]={4, 0.3, -1.9}
 	
 	--Scale of Walls
 	scaleWall[1]={0.1, 4, 5}
@@ -69,8 +67,6 @@ function createBoarders()
 	scaleWall[3]={0.1, 6, 20}
 	scaleWall[4]={0.1, 6, 20}
 	scaleWall[5]={0.1, 22, 4}
-	--scaleWall[6]={0.2, 6, 8}
-	--scaleWall[7]={0.2, 6, 8}
 	
 	--Rotation of Walls
 	rotWall[1]={0,90,0}
@@ -78,8 +74,7 @@ function createBoarders()
 	rotWall[3]={0,0,0}
 	rotWall[4]={0,0,0}
 	rotWall[5]={0,90,90}
-	--rotWall[6]={0,0,0}
-	--rotWall[7]={0,0,0}
+
 	
 	--Create Walls of the Game
 	for i=1,5 do 
@@ -91,13 +86,7 @@ function createBoarders()
 		roof:setposition(posWall[i])
 		roof:setorientation(rotWall[i])
 		roof:connectdrsobject(wallsVisuals)
-		if i==5 then
-			parentWalls:hide()
-		else
-			parentWalls:show()
-		end
 		parentWalls:setposition(0,10,0)
-		--roof:getattacheddrsobject():hide()
 	end
 	
 end
@@ -107,13 +96,8 @@ function distance3D(t1, t2)
 	return math.sqrt((t1[1]-t2[1])^2 + (t1[2]-t2[2])^2 + (t1[3]-t2[3])^2)
 end
 
---Distance Function in 3D
-function distancePoints(t1, t2)
-	return math.sqrt((t1-t2)^2)
-end
-
 function getRandom()
-	-- Returns a random value between 5.5 - 9.5
+	-- Returns a random value between 5.5 - 9.5. Lua Random is not good enough.
 	return math.random(700, 950) / 80
 end
 
@@ -132,7 +116,6 @@ function createObject(height,posLR)
 	parentObst:setposition(0,10,0)
 	obj = {}
 	obj.o = obstVisuals
-	--obj.pos = position
 	obj.obst = obst
 	obj.fallspeed = speed
 	return obj
@@ -159,6 +142,7 @@ function controlObstacle(obj,num)
 	end
 end
 
+-- Count Function
 function intCount(limit)
     count = count + 1
 	if count>limit then
@@ -199,7 +183,7 @@ end
 if init~=1 then
 	init = 1
 
-	--Physic World
+	--Initiliaze physical world in Orge 3D inside D-Flow engine (Engine used by Motekforce Link)
 	w1= world.createworld()	
 	w1:setworldproperties ("gravity = 9.81; step_size=0.003") 
 	w1:creatematerial ("Static", 0)
@@ -220,11 +204,11 @@ if init~=1 then
 	drsLeft:collisions (drsLeft) 
 	drsRight:collisions (drsRight) 
 	
-	--[[Create Parent Ball
-	drsParLeft = object.create("Sphere", "Red")
-	drsParRight = object.create("Sphere", "Green")
+	--Create Parent Ball if needed 
+	--drsParLeft = object.create("Sphere", "Red")
+	--drsParRight = object.create("Sphere", "Green")
 	--drsParBall:setcastshadows(true)
-	ball:connectdrsobject(drsParBall)]]
+	--ball:connectdrsobject(drsParBall)
 	
 	drsfloor = object.create("Cube", "Black")
 	parentFloor=object.create("Cube", "Green")
@@ -244,40 +228,4 @@ if init~=1 then
 	--drsParBall:setposition(0,17,0)
 	--Call functions
 	createBoarders()
-	
-	
-	
-	--obst=createObstacles(height)
-	
-	
-	
-	--[[Radius of the Ring created by cubes
-	local radius=radius or {}
-	radius[1]=0.61
-	radius[2]=0.35
-	for i=3,7 do
-		radius[i]=0.11
-	end
-	
-	--Position of the Ring
-	local posRing= posRing or {}
-	for i=1,3 do
-		posRing[i]={0,1.1,-7.9}
-	end
-	posRing[4]={0,1.2,-8.4}
-	posRing[5]={0,1.5,-8.9,}
-	posRing[6]={1,1.7,-9.3}	
-	posRing[7]={-1,1.7,-9.3}
-	
-	--Rotation of the Ring
-	local rotRing={20,10,0}
-
-	--Create a number of Circles
-	for i=1,7 do
-		--Create a number of circles 
-		pos,rot=createRings(radius[i],posRing[i],rotRing[i])
-		createPhysic(pos,rot, radius[i])
-		--Place the position of the scoring cones, in the centre of the circle
-		listCones[i]=createCones(posRing[i],i)
-	end	]]
 end
